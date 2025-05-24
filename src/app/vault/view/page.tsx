@@ -1,0 +1,497 @@
+'use client';
+
+import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
+import { BrowserProvider, Contract } from 'ethers';
+import { CONTRACT_ADDRESS, ABI } from '@/lib/constants';
+import { useLitProtocol } from '@/hooks/useLitProtocol';
+import { useAuth } from '@/context/AuthContext';
+
+interface CredentialData {
+  website: string;
+  username: string;
+  password: string;
+}
+
+interface CredentialEntry {
+  id: number;
+  website: string;
+  username: string;
+  password: string;
+}
+
+interface EncryptedData {
+  ciphertext: string;
+  dataToEncryptHash: string;
+}
+
+function PasswordVerification({ onVerified }: { onVerified: () => void }) {
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const { account } = useAuth();
+
+  const handleVerifyPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    // check backend server is running
+    // try{
+    //   const response = await fetch('/api/ping');
+    //   if(!response){
+    //     throw new Error('Server is not running');
+    //   }else{
+    //     console.log('Server is running');
+    //   }
+    // } catch (error) {
+    //   setError('Server is not running');
+    //   return;
+    // }
+
+    try {
+      // console.log('account', account);
+      // console.log('password', password);
+
+      const response = await fetch('/api/auth/verify-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          walletAddress: account,
+          password: password,
+        }),
+      });
+
+      // console.log('response', response);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Invalid password');
+      }
+
+      onVerified();
+    } catch (error) {
+      setError('Invalid password. Please try again.');
+      console.error('Error verifying password:', error);
+    }
+  };
+
+  return (
+    <div style={{ 
+      padding: '2rem',
+      maxWidth: '400px',
+      margin: '0 auto',
+      textAlign: 'center'
+    }}>
+      <h1 style={{ 
+        fontSize: '1.8rem',
+        fontWeight: 'bold',
+        marginBottom: '2rem'
+      }}>
+        Enter Password
+      </h1>
+      <form onSubmit={handleVerifyPassword}>
+        <div style={{ position: 'relative', marginBottom: '1rem' }}>
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError('');
+            }}
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              paddingRight: '40px',
+              border: `1px solid ${error ? '#ff4444' : '#ddd'}`,
+              borderRadius: '4px',
+              fontSize: '1rem'
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            style={{
+              position: 'absolute',
+              right: '8px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              border: 'none',
+              background: 'none',
+              cursor: 'pointer',
+              color: '#666',
+              padding: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {showPassword ? '👁️‍🗨️' : '👁️'}
+          </button>
+        </div>
+        {error && (
+          <p style={{ color: '#ff4444', marginBottom: '1rem' }}>
+            {error}
+          </p>
+        )}
+        <button
+          type="submit"
+          style={{
+            width: '100%',
+            padding: '0.75rem',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '1rem'
+          }}
+        >
+          Unlock
+        </button>
+      </form>
+    </div>
+  );
+}
+
+function ViewEntriesContent() {
+  const [entries, setEntries] = useState<CredentialEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [visibleEntries, setVisibleEntries] = useState<Set<number>>(new Set());
+  const [copyStatus, setCopyStatus] = useState<{ [key: string]: boolean }>({});
+  const [deleting, setDeleting] = useState<number | null>(null);
+  const { isConnected, isLoading: litLoading, decryptData } = useLitProtocol();
+
+  const router = useRouter();
+
+  const loadEntries = useCallback(async () => {
+    try {
+      if (!window.ethereum) {
+        setError('Please install MetaMask to view your entries.');
+        setLoading(false);
+        return;
+      }
+
+      // Check network
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+      if (chainId !== '0xaa36a7') { // Sepolia chainId
+        setError('Please connect to Sepolia testnet to view your entries.');
+        setLoading(false);
+        return;
+      }
+
+      if (!isConnected) {
+        setError('Waiting for Lit Protocol to connect...');
+        return;
+      }
+
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const provider = new BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
+
+      const fetchedEntries: CredentialEntry[] = [];
+      const userAddress = await signer.getAddress();
+      const entryCount = await contract.getUserEntryCount(userAddress);
+
+      for (let i = 0; i < entryCount; i++) {
+        try {
+          const encryptedResult = await contract.getEntry(i);
+          if (encryptedResult && encryptedResult !== "0x" && encryptedResult.trim() !== '') {
+            try {
+              // Parse the encrypted data
+              const encryptedData: EncryptedData = JSON.parse(encryptedResult);
+              
+              // Decrypt the data using Lit Protocol
+              const decryptedData = await decryptData(
+                encryptedData.ciphertext,
+                encryptedData.dataToEncryptHash
+              );
+
+              // Parse the decrypted data
+              const parsedData = JSON.parse(decryptedData) as CredentialData;
+              fetchedEntries.push({
+                id: i,
+                ...parsedData
+              });
+            } catch (parseErr) {
+              console.error(`Error parsing/decrypting entry ${i}:`, parseErr);
+            }
+          }
+        } catch (entryErr) {
+          console.error(`Error fetching entry ${i}:`, entryErr);
+        }
+      }
+
+      setEntries(fetchedEntries);
+      setError(null);
+    } catch (err) {
+      console.error('Error loading entries:', err);
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLoading(false);
+    }
+  }, [decryptData, isConnected]);
+
+  useEffect(() => {
+    if (!litLoading && isConnected) {
+      loadEntries();
+    }
+  }, [litLoading, isConnected, loadEntries]);
+
+  const toggleEntryVisibility = (index: number) => {
+    setVisibleEntries(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
+  const copyToClipboard = async (text: string, field: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyStatus({ [`${index}-${field}`]: true });
+      setTimeout(() => {
+        setCopyStatus(prev => ({ ...prev, [`${index}-${field}`]: false }));
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  const handleDelete = async (entryId: number) => {
+    try {
+      setDeleting(entryId);
+      if (!window.ethereum) {
+        throw new Error('MetaMask is not installed');
+      }
+
+      const provider = new BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new Contract(CONTRACT_ADDRESS, ABI, signer);
+
+      // Call the deleteEntry function with the actual blockchain entry ID
+      const tx = await contract.deleteEntry(entryId);
+      await tx.wait();
+
+      // Remove the entry from the local state
+      setEntries(prevEntries => prevEntries.filter(entry => entry.id !== entryId));
+      setDeleting(null);
+    } catch (err) {
+      console.error('Error deleting entry:', err);
+      setError('Failed to delete entry. Please try again.');
+      setDeleting(null);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <div style={{ fontSize: '1.2rem', color: '#666' }}>
+          Loading your stored credentials from blockchain...
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: '2rem', color: '#DC2626', textAlign: 'center' }}>
+        {error}
+      </div>
+    );
+  }
+
+  if (entries.length === 0) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <p style={{ marginBottom: '1rem', color: '#666' }}>No stored entries found.</p>
+        <button
+          onClick={() => router.push('/vault')}
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '1rem'
+          }}
+        >
+          Store New Credentials
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ padding: '2rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>Your Stored Credentials</h1>
+        <button
+          onClick={() => router.push('/vault')}
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '1rem'
+          }}
+        >
+          Store New Credentials
+        </button>
+      </div>
+
+      {entries.map((entry, index) => (
+        <div
+          key={entry.id}
+          style={{
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            padding: '1.5rem',
+            marginBottom: '1rem',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            border: '1px solid #e5e7eb'
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#1F2937' }}>{entry.website}</h2>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <button
+                onClick={() => router.push(`/vault/edit?id=${entry.id}`)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  backgroundColor: '#3B82F6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(entry.id)}
+                disabled={deleting === entry.id}
+                style={{
+                  padding: '0.5rem 1rem',
+                  backgroundColor: deleting === entry.id ? '#9CA3AF' : '#DC2626',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: deleting === entry.id ? 'not-allowed' : 'pointer'
+                }}
+              >
+                {deleting === entry.id ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gap: '1rem' }}>
+            <div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ color: '#4B5563', width: '80px' }}>Username:</span>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ flex: 1 }}>{entry.username}</span>
+                  <button
+                    onClick={() => copyToClipboard(entry.username, 'username', index)}
+                    style={{
+                      padding: '0.25rem 0.5rem',
+                      backgroundColor: copyStatus[`${index}-username`] ? '#10B981' : '#E5E7EB',
+                      color: copyStatus[`${index}-username`] ? 'white' : '#374151',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem'
+                    }}
+                  >
+                    {copyStatus[`${index}-username`] ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </label>
+            </div>
+
+            <div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ color: '#4B5563', width: '80px' }}>Password:</span>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ flex: 1 }}>
+                    {visibleEntries.has(index) ? entry.password : '••••••••'}
+                  </span>
+                  <button
+                    onClick={() => toggleEntryVisibility(index)}
+                    style={{
+                      padding: '0.25rem 0.5rem',
+                      backgroundColor: '#E5E7EB',
+                      color: '#374151',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem'
+                    }}
+                  >
+                    {visibleEntries.has(index) ? '🙈 Hide' : '👁️ Show'}
+                  </button>
+                  <button
+                    onClick={() => copyToClipboard(entry.password, 'password', index)}
+                    style={{
+                      padding: '0.25rem 0.5rem',
+                      backgroundColor: copyStatus[`${index}-password`] ? '#10B981' : '#E5E7EB',
+                      color: copyStatus[`${index}-password`] ? 'white' : '#374151',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem'
+                    }}
+                  >
+                    {copyStatus[`${index}-password`] ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function ViewEntriesPage() {
+  const [isVerified, setIsVerified] = useState(false);
+
+  if (!isVerified) {
+    return (
+      <Suspense fallback={
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '1.2rem', color: '#666' }}>
+            Loading...
+          </div>
+        </div>
+      }>
+        <PasswordVerification onVerified={() => setIsVerified(true)} />
+      </Suspense>
+    );
+  }
+
+  return (
+    <Suspense fallback={
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <div style={{ fontSize: '1.2rem', color: '#666' }}>
+          Loading...
+        </div>
+      </div>
+    }>
+      <ViewEntriesContent />
+    </Suspense>
+  );
+}
