@@ -45,7 +45,7 @@ export default function Home() {
           <p className={styles.subtitle}>
             The modern, secure solution for managing your passwords and two-factor authentication. Keep your digital life safe and organized.
           </p>
-          <Link href="/register" className={styles.ctaButton}>
+          <Link href="/login" className={styles.ctaButton}>
             Get Started Now
           </Link>
         </section>
