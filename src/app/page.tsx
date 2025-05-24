@@ -41,7 +41,7 @@ export default function Home() {
 
         <section className={styles.heroSection}>
           <div className={styles.lockIcon}>🔐</div>
-          <h1 className={styles.title}>Welcome to Paaskeeper Beata 0.2</h1>
+          <h1 className={styles.title}>Welcome to Paaskeeper Beta 0.2</h1>
           <p className={styles.subtitle}>
             The modern, secure solution for managing your passwords and two-factor authentication. Keep your digital life safe and organized.
           </p>
