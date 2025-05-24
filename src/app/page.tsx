@@ -42,9 +42,9 @@ export default function Home() {
         <section className={styles.heroSection}>
           <div className={styles.lockIcon}>🔐</div>
           <h3 className={styles.title}>Welcome to Paaskeeper Beta 0.2</h3>
-          <p className={styles.subtitle}>
+{/*           <p className={styles.subtitle}>
             The modern, secure solution for managing your passwords and two-factor authentication. Keep your digital life safe and organized.
-          </p>
+          </p> */}
           <Link href="/login" className={styles.ctaButton}>
             Get Started Now
           </Link>
