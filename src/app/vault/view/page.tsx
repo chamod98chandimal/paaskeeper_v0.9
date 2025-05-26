@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useEffect, useState, useCallback, useRef, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { BrowserProvider, Contract } from 'ethers';
 import { CONTRACT_ADDRESS, ABI } from '@/lib/constants';
 import { useLitProtocol } from '@/hooks/useLitProtocol';
 import { useAuth } from '@/context/AuthContext';
+import { debugLitProtocolState, clearAllAuthData } from '@/lib/browserUtils';
 
 interface CredentialData {
   website: string;
@@ -165,11 +166,50 @@ function ViewEntriesContent() {
   const [copyStatus, setCopyStatus] = useState<{ [key: string]: boolean }>({});
   const [deleting, setDeleting] = useState<number | null>(null);
   const { isConnected, isLoading: litLoading, decryptData } = useLitProtocol();
+  
+  // Track if entries have been loaded to prevent unnecessary re-loads
+  const entriesLoadedRef = useRef(false);
+  const loadingRef = useRef(false);
 
   const router = useRouter();
 
+  const handleClearAuthData = async () => {
+    // Debug current state before clearing
+    await debugLitProtocolState();
+    
+    // Clear all authentication data
+    clearAllAuthData();
+    
+    // Redirect to login
+    router.push('/login');
+  };
+
+  const handleRefreshEntries = () => {
+    // Reset flags and reload entries
+    entriesLoadedRef.current = false;
+    loadingRef.current = false;
+    setLoading(true);
+    setError(null);
+    loadEntries();
+  };
+
   const loadEntries = useCallback(async () => {
+    // Prevent multiple simultaneous loads
+    if (!isConnected || litLoading || loadingRef.current) {
+      return;
+    }
+
+    // If already loaded entries, don't reload unless forced
+    if (entriesLoadedRef.current && entries.length > 0) {
+      return;
+    }
+
+    loadingRef.current = true;
+
     try {
+      // Debug browser and auth state
+      await debugLitProtocolState();
+      
       if (!window.ethereum) {
         setError('Please install MetaMask to view your entries.');
         setLoading(false);
@@ -181,11 +221,6 @@ function ViewEntriesContent() {
       if (chainId !== '0xaa36a7') { // Sepolia chainId
         setError('Please connect to Sepolia testnet to view your entries.');
         setLoading(false);
-        return;
-      }
-
-      if (!isConnected) {
-        setError('Waiting for Lit Protocol to connect...');
         return;
       }
 
@@ -220,6 +255,11 @@ function ViewEntriesContent() {
               });
             } catch (parseErr) {
               console.error(`Error parsing/decrypting entry ${i}:`, parseErr);
+              // If it's an auth error, provide helpful instructions
+              if (parseErr instanceof Error && (parseErr.message.includes('Unauthorized') || parseErr.message.includes('401'))) {
+                console.log('Authentication error detected for entry', i);
+                // Don't throw here, just log and continue to other entries
+              }
             }
           }
         } catch (entryErr) {
@@ -229,19 +269,34 @@ function ViewEntriesContent() {
 
       setEntries(fetchedEntries);
       setError(null);
+      entriesLoadedRef.current = true;
     } catch (err) {
       console.error('Error loading entries:', err);
-      setError(err instanceof Error ? err.message : String(err));
+      
+      // Provide specific error messages for common auth issues
+      if (err instanceof Error && (err.message.includes('Unauthorized') || err.message.includes('401'))) {
+        setError('Authentication failed. Please try the following: 1) Refresh the page, 2) Disconnect and reconnect MetaMask, 3) Clear browser data for this site.');
+      } else {
+        setError(err instanceof Error ? err.message : String(err));
+      }
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
-  }, [decryptData, isConnected]);
+  }, [decryptData, isConnected, litLoading]);
 
   useEffect(() => {
-    if (!litLoading && isConnected) {
+    // Only run once when Lit Protocol is connected and ready
+    let mounted = true;
+    
+    if (!litLoading && isConnected && mounted) {
       loadEntries();
     }
-  }, [litLoading, isConnected, loadEntries]);
+
+    return () => {
+      mounted = false;
+    };
+  }, [litLoading, isConnected]); // Removed loadEntries from dependencies to prevent infinite loop
 
   const toggleEntryVisibility = (index: number) => {
     setVisibleEntries(prev => {
@@ -304,8 +359,43 @@ function ViewEntriesContent() {
 
   if (error) {
     return (
-      <div style={{ padding: '2rem', color: '#DC2626', textAlign: 'center' }}>
-        {error}
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <div style={{ color: '#DC2626', marginBottom: '1rem' }}>
+          {error}
+        </div>
+        {(error.includes('Authentication') || error.includes('Unauthorized') || error.includes('401')) && (
+          <div style={{ marginTop: '1rem' }}>
+            <button
+              onClick={handleClearAuthData}
+              style={{
+                padding: '0.75rem 1.5rem',
+                backgroundColor: '#DC2626',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '1rem',
+                marginRight: '1rem'
+              }}
+            >
+              Clear Auth Data & Re-login
+            </button>
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                padding: '0.75rem 1.5rem',
+                backgroundColor: '#4CAF50',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '1rem'
+              }}
+            >
+              Refresh Page
+            </button>
+          </div>
+        )}
       </div>
     );
   }
@@ -314,6 +404,9 @@ function ViewEntriesContent() {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
         <p style={{ marginBottom: '1rem', color: '#666' }}>No stored entries found.</p>
+        <p style={{ marginBottom: '1rem', color: '#999', fontSize: '0.9rem' }}>
+          If you expect to see entries here, try refreshing the page or clearing authentication data.
+        </p>
         <button
           onClick={() => router.push('/vault')}
           style={{
@@ -323,10 +416,40 @@ function ViewEntriesContent() {
             border: 'none',
             borderRadius: '4px',
             cursor: 'pointer',
-            fontSize: '1rem'
+            fontSize: '1rem',
+            marginRight: '1rem'
           }}
         >
           Store New Credentials
+        </button>
+        <button
+          onClick={() => window.location.reload()}
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#2196F3',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            marginRight: '1rem'
+          }}
+        >
+          Refresh Page
+        </button>
+        <button
+          onClick={() => router.push('/debug')}
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#FF9800',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '1rem'
+          }}
+        >
+          Debug Lit Protocol
         </button>
       </div>
     );
@@ -336,20 +459,36 @@ function ViewEntriesContent() {
     <div style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>Your Stored Credentials</h1>
-        <button
-          onClick={() => router.push('/vault')}
-          style={{
-            padding: '0.75rem 1.5rem',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '1rem'
-          }}
-        >
-          Store New Credentials
-        </button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button
+            onClick={handleRefreshEntries}
+            style={{
+              padding: '0.75rem 1.5rem',
+              backgroundColor: '#2196F3',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '1rem'
+            }}
+          >
+            Refresh
+          </button>
+          <button
+            onClick={() => router.push('/vault')}
+            style={{
+              padding: '0.75rem 1.5rem',
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '1rem'
+            }}
+          >
+            Store New Credentials
+          </button>
+        </div>
       </div>
 
       {entries.map((entry, index) => (

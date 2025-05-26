@@ -26,7 +26,6 @@
     "face-api.js": "^0.22.2",
     "framer-motion": "^12.9.4",
     "jsonwebtoken": "^9.0.2",
-    "lit-js-sdk": "^1.1.250",
     "mongoose": "^8.14.3",
     "next": "latest",
     "pino-pretty": "^13.0.0",
