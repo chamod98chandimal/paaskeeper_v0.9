@@ -49,6 +49,262 @@ export default function Home() {
             Get Started Now
           </Link> */}
         </section>
+
+        <section className={styles.howToUseSection}>
+          <div className={styles.howToUseHeader}>
+            <div className={styles.howToUseIcon}>📋</div>
+            <h2 className={styles.howToUseTitle}>How to Use Paaskeeper</h2>
+            <p className={styles.howToUseSubtitle}>
+              Get started with Paaskeeper in 3 simple steps
+            </p>
+          </div>
+          
+          <div className={styles.stepsContainer}>
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>1</div>
+              <div className={styles.stepIcon}>🔐</div>
+              <h3 className={styles.stepTitle}>Create Your Vault</h3>
+              <p className={styles.stepDescription}>
+                Set up your secure password vault with a master password. This is the only password you'll need to remember.
+              </p>
+            </div>
+
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>2</div>
+              <div className={styles.stepIcon}>📝</div>
+              <h3 className={styles.stepTitle}>Add Your Passwords</h3>
+              <p className={styles.stepDescription}>
+                Import existing passwords or create new ones. Paaskeeper will generate strong, unique passwords for all your accounts.
+              </p>
+            </div>
+
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>3</div>
+              <div className={styles.stepIcon}>🚀</div>
+              <h3 className={styles.stepTitle}>Access Anywhere</h3>
+              <p className={styles.stepDescription}>
+                Use auto-fill on any device, sync across all platforms, and enjoy secure access to your digital life.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.partnersSection}>
+          <div className={styles.partnersHeader}>
+            <div className={styles.partnersIcon}>🤝</div>
+            <h2 className={styles.partnersTitle}>Trusted Partners</h2>
+            <p className={styles.partnersSubtitle}>
+              Powered by industry-leading blockchain and security technologies
+            </p>
+          </div>
+          
+          <div className={styles.carouselContainer}>
+            <div className={styles.carousel}>
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/ethereum-logo.png" alt="Ethereum" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Ethereum</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/alchemy.png" alt="Alchemy" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Alchemy</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/lit_protocol_logo.jpeg" alt="Lit Protocol" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Lit Protocol</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/tenderly.png" alt="Tenderly" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Tenderly</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/metamask.png" alt="MetaMask" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>MetaMask</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/infura.png" alt="Infura" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Infura</span>
+              </div>
+
+              {/* Duplicate for seamless loop */}
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/ethereum-logo.png" alt="Ethereum" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Ethereum</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/alchemy.png" alt="Alchemy" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Alchemy</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/lit_protocol_logo.jpeg" alt="Lit Protocol" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Lit Protocol</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/tenderly.png" alt="Tenderly" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Tenderly</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/metamask.png" alt="MetaMask" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>MetaMask</span>
+              </div>
+              
+              <div className={styles.partnerCard}>
+                <div className={styles.partnerLogo}>
+                  <img src="/images/partners/infura.png" alt="Infura" className={styles.partnerImage} />
+                </div>
+                <span className={styles.partnerName}>Infura</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.teamSection}>
+          <div className={styles.teamHeader}>
+            {/* <div className={styles.teamIcon}>👥</div> */}
+            <h2 className={styles.teamTitle}>Meet Our Team</h2>
+            <p className={styles.teamSubtitle}>
+              The passionate minds behind Paaskeeper's security innovation
+            </p>
+          </div>
+          
+          <div className={styles.teamGrid}>
+            <div className={styles.teamCard}>
+              <div className={styles.teamPhoto}>
+                <img src="/images/team/era.jpeg" alt="era" className={styles.teamImage} />
+              </div>
+              <h3 className={styles.teamName}>N.D.C.C.E.Dissanayake</h3>
+              <p className={styles.teamRole}>CEO & Founder</p>
+              <div className={styles.teamContacts}>
+                <a href="chamod983.bitcoin@ud.me" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>📧</span>
+                  chamod983.bitcoin@ud.me
+                </a>
+                <a href="https://www.linkedin.com/in/chamodchandimal/" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>💼</span>
+                  LinkedIn
+                </a>
+                <a href="https://ud.me/chamod983.bitcoin" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>🌐</span>
+                  Portfolio
+                </a>
+                <a href="https://github.com/chamodchandimal" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>⚡</span>
+                  GitHub
+                </a>
+              </div>
+            </div>
+
+            <div className={styles.teamCard}>
+              <div className={styles.teamPhoto}>
+                <img src="/images/team/sarah-chen.jpg" alt="Sarah Chen" className={styles.teamImage} />
+              </div>
+              <h3 className={styles.teamName}>Sarah Chen</h3>
+              <p className={styles.teamRole}>CTO</p>
+              <div className={styles.teamContacts}>
+                <a href="mailto:sarah@paaskeeper.com" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>📧</span>
+                  sarah@paaskeeper.com
+                </a>
+                <a href="https://linkedin.com/in/sarahchen" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>💼</span>
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+
+            <div className={styles.teamCard}>
+              <div className={styles.teamPhoto}>
+                <img src="/images/team/michael-rodriguez.jpg" alt="Michael Rodriguez" className={styles.teamImage} />
+              </div>
+              <h3 className={styles.teamName}>Michael Rodriguez</h3>
+              <p className={styles.teamRole}>Security Engineer</p>
+              <div className={styles.teamContacts}>
+                <a href="mailto:michael@paaskeeper.com" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>📧</span>
+                  michael@paaskeeper.com
+                </a>
+                <a href="https://linkedin.com/in/michaelrodriguez" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>💼</span>
+                  LinkedIn
+                </a>
+                <a href="https://securityblog.michaelr.dev" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>🌐</span>
+                  Blog
+                </a>
+              </div>
+            </div>
+
+            <div className={styles.teamCard}>
+              <div className={styles.teamPhoto}>
+                <img src="/images/team/emma-thompson.jpg" alt="Emma Thompson" className={styles.teamImage} />
+              </div>
+              <h3 className={styles.teamName}>Emma Thompson</h3>
+              <p className={styles.teamRole}>UI/UX Designer</p>
+              <div className={styles.teamContacts}>
+                <a href="mailto:emma@paaskeeper.com" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>📧</span>
+                  emma@paaskeeper.com
+                </a>
+                <a href="https://linkedin.com/in/emmathompson" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>💼</span>
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+
+            <div className={styles.teamCard}>
+              <div className={styles.teamPhoto}>
+                <img src="/images/team/david-kim.jpg" alt="David Kim" className={styles.teamImage} />
+              </div>
+              <h3 className={styles.teamName}>David Kim</h3>
+              <p className={styles.teamRole}>Blockchain Developer</p>
+              <div className={styles.teamContacts}>
+                <a href="mailto:david@paaskeeper.com" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>📧</span>
+                  david@paaskeeper.com
+                </a>
+                <a href="https://linkedin.com/in/davidkim" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>💼</span>
+                  LinkedIn
+                </a>
+                <a href="https://github.com/davidkim" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>⚡</span>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
       <footer className={styles.footer}>
         <span className={styles.footerText}>VMTEK Works @ 2025</span>
