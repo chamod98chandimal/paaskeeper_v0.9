@@ -1,5 +1,4 @@
 import styles from './page.module.css';
-import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -287,7 +286,7 @@ export default function Home() {
                 <img src="/images/team/era.jpeg" alt="era" className={styles.teamImage} />
               </div>
               <h3 className={styles.teamName}>N.D.C.C.E.Dissanayake</h3>
-              <p className={styles.teamRole}>CEO & Founder</p>
+              {/* <p className={styles.teamRole}>CEO & Founder</p> */}
               <div className={styles.teamContacts}>
                 <a href="chamod983.bitcoin@ud.me" className={styles.contactLink}>
                   <span className={styles.contactIcon}>📧</span>
@@ -313,7 +312,7 @@ export default function Home() {
                 <img src="/images/team/sarah-chen.jpg" alt="Sarah Chen" className={styles.teamImage} />
               </div>
               <h3 className={styles.teamName}>Sarah Chen</h3>
-              <p className={styles.teamRole}>CTO</p>
+              {/* <p className={styles.teamRole}>CTO</p> */}
               <div className={styles.teamContacts}>
                 <a href="mailto:sarah@paaskeeper.com" className={styles.contactLink}>
                   <span className={styles.contactIcon}>📧</span>
@@ -328,60 +327,77 @@ export default function Home() {
 
             <div className={styles.teamCard}>
               <div className={styles.teamPhoto}>
-                <img src="/images/team/michael-rodriguez.jpg" alt="Michael Rodriguez" className={styles.teamImage} />
+                <img src="/images/team/T.P.Rathnayaka.jpg" alt="T.P.Rathnayaka" className={styles.teamImage} />
               </div>
-              <h3 className={styles.teamName}>Michael Rodriguez</h3>
-              <p className={styles.teamRole}>Security Engineer</p>
+              <h3 className={styles.teamName}>T.P.Rathnayaka</h3>
+              {/* <p className={styles.teamRole}>Security Engineer</p> */}
               <div className={styles.teamContacts}>
-                <a href="mailto:michael@paaskeeper.com" className={styles.contactLink}>
+                <a href="rathnayakapaboda79@gmail.com" className={styles.contactLink}>
                   <span className={styles.contactIcon}>📧</span>
-                  michael@paaskeeper.com
+                  rathnayakapaboda79@gmail.com
                 </a>
-                <a href="https://linkedin.com/in/michaelrodriguez" className={styles.contactLink}>
+                <a href="http://www.linkedin.com/in/thashmi-rathnayaka-408bbb29b" className={styles.contactLink}>
                   <span className={styles.contactIcon}>💼</span>
                   LinkedIn
                 </a>
-                <a href="https://securityblog.michaelr.dev" className={styles.contactLink}>
+                {/* <a href="https://securityblog.michaelr.dev" className={styles.contactLink}>
                   <span className={styles.contactIcon}>🌐</span>
                   Blog
+                </a> */}
+                <a href="https://github.com/ThashmiRathnayaka" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>⚡</span>
+                  GitHub
                 </a>
               </div>
             </div>
 
             <div className={styles.teamCard}>
               <div className={styles.teamPhoto}>
-                <img src="/images/team/emma-thompson.jpg" alt="Emma Thompson" className={styles.teamImage} />
+                <img src="/images/team/kavi1.jpeg" alt="D.M.K.P.Dissanayaka" className={styles.teamImage} />
               </div>
-              <h3 className={styles.teamName}>Emma Thompson</h3>
-              <p className={styles.teamRole}>UI/UX Designer</p>
+              <h3 className={styles.teamName}>D.M.K.P.Dissanayaka</h3>
+              {/* <p className={styles.teamRole}>UI/UX Designer</p> */}
               <div className={styles.teamContacts}>
-                <a href="mailto:emma@paaskeeper.com" className={styles.contactLink}>
+                <a href="kavindradissanayaka1998@gmail.com" className={styles.contactLink}>
                   <span className={styles.contactIcon}>📧</span>
-                  emma@paaskeeper.com
+                  kavindradissanayaka1998@gmail.com
                 </a>
-                <a href="https://linkedin.com/in/emmathompson" className={styles.contactLink}>
+                <a href="https://www.linkedin.com/in/kaveendradissanayaka" className={styles.contactLink}>
                   <span className={styles.contactIcon}>💼</span>
                   LinkedIn
+                </a>
+                <a href="https://kaveendra.netlify.app" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>🌐</span>
+                  Portfolio
+                </a>
+                <a href="https://github.com/kavipaba" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>⚡</span>
+                  GitHub
                 </a>
               </div>
             </div>
 
             <div className={styles.teamCard}>
               <div className={styles.teamPhoto}>
-                <img src="/images/team/david-kim.jpg" alt="David Kim" className={styles.teamImage} />
+                <img src="/images/team/venuri.jpg" alt="R.T.V.Rathnasuriya" className={styles.teamImage} />
               </div>
-              <h3 className={styles.teamName}>David Kim</h3>
-              <p className={styles.teamRole}>Blockchain Developer</p>
+              <h3 className={styles.teamName}>R.T.V.Rathnasuriya</h3>
+              {/* <p className={styles.teamRole}>Blockchain Developer</p> */}
               <div className={styles.teamContacts}>
-                <a href="mailto:david@paaskeeper.com" className={styles.contactLink}>
+                <a href="thathsaranirathnasooriya@gmail.com" className={styles.contactLink}>
                   <span className={styles.contactIcon}>📧</span>
-                  david@paaskeeper.com
+                  thathsaranirathnasooriya@gmail.com
                 </a>
-                <a href="https://linkedin.com/in/davidkim" className={styles.contactLink}>
+                <a href="www.linkedin.com/in/thathsarani-rathnasuriya-804015290" className={styles.contactLink}>
                   <span className={styles.contactIcon}>💼</span>
                   LinkedIn
                 </a>
-                <a href="https://github.com/davidkim" className={styles.contactLink}>
+                
+                <a href="https://thathsaranivenurathnasuriya.github.io/my-portfolio-site" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>🌐</span>
+                  Portfolio
+                </a>
+                <a href="https://github.com/thathsaranivenurathnasuriya" className={styles.contactLink}>
                   <span className={styles.contactIcon}>⚡</span>
                   GitHub
                 </a>
@@ -390,9 +406,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className={styles.footer}>
-        <span className={styles.footerText}>VMTEK Works @ 2025</span>
-      </footer>
     </div>
   );
 }

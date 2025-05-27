@@ -164,23 +164,30 @@ function EditCredentialForm() {
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold', marginBottom: '2rem' }}>Edit Credentials</h1>
+    <>
+      <style jsx>{`
+        input::placeholder {
+          color: #6e7681 !important;
+          opacity: 1;
+        }
+      `}</style>
+      <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
+        <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold', marginBottom: '2rem', color: '#c9d1d9' }}>Edit Credentials</h1>
 
       {loading ? (
         <div style={{ textAlign: 'center', color: '#666' }}>
           Loading credential details...
         </div>
-      ) : decryptError ? (
-        <div style={{ color: 'red', padding: '1rem', backgroundColor: '#fee', borderRadius: '4px', marginBottom: '1rem' }}>
+              ) : decryptError ? (
+        <div style={{ color: '#f85149', padding: '1rem', backgroundColor: '#0d1117', border: '1px solid #f85149', borderRadius: '4px', marginBottom: '1rem' }}>
           <p>Error decrypting entry: {decryptError}</p>
           <button
             onClick={() => router.push('/vault/view')}
             style={{
               marginTop: '1rem',
               padding: '0.5rem 1rem',
-              backgroundColor: '#f44336',
-              color: 'white',
+              backgroundColor: '#f85149',
+              color: '#ffffff',
               border: 'none',
               borderRadius: '4px',
               cursor: 'pointer'
@@ -192,7 +199,7 @@ function EditCredentialForm() {
       ) : (
         <>
           <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#333' }}>
+            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9' }}>
               Website
               <input
                 type="text"
@@ -202,16 +209,18 @@ function EditCredentialForm() {
                 style={{
                   width: '100%',
                   padding: '0.5rem',
-                  border: '1px solid #ddd',
+                  border: '1px solid #ccc',
                   borderRadius: '4px',
-                  marginTop: '0.25rem'
+                  marginTop: '0.25rem',
+                  backgroundColor: '#0d1117',
+                  color: '#c9d1d9'
                 }}
               />
             </label>
           </div>
 
           <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#333' }}>
+            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9' }}>
               Username
               <input
                 type="text"
@@ -221,16 +230,18 @@ function EditCredentialForm() {
                 style={{
                   width: '100%',
                   padding: '0.5rem',
-                  border: '1px solid #ddd',
+                  border: '1px solid #ccc',
                   borderRadius: '4px',
-                  marginTop: '0.25rem'
+                  marginTop: '0.25rem',
+                  backgroundColor: '#0d1117',
+                  color: '#c9d1d9'
                 }}
               />
             </label>
           </div>
 
           <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#333' }}>
+            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9' }}>
               Password
               <div style={{ position: 'relative' }}>
                 <input
@@ -241,9 +252,11 @@ function EditCredentialForm() {
                   style={{
                     width: '100%',
                     padding: '0.5rem',
-                    border: '1px solid #ddd',
+                    border: '1px solid #ccc',
                     borderRadius: '4px',
-                    marginTop: '0.25rem'
+                    marginTop: '0.25rem',
+                    backgroundColor: '#0d1117',
+                    color: '#c9d1d9'
                   }}
                 />
                 <button
@@ -271,8 +284,8 @@ function EditCredentialForm() {
               onClick={handleUpdate}
               style={{
                 padding: '0.75rem 1.5rem',
-                backgroundColor: '#4CAF50',
-                color: 'white',
+                backgroundColor: '#2ea043',
+                color: '#ffffff',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
@@ -285,8 +298,8 @@ function EditCredentialForm() {
               onClick={() => router.push('/vault/view')}
               style={{
                 padding: '0.75rem 1.5rem',
-                backgroundColor: '#f44336',
-                color: 'white',
+                backgroundColor: '#f85149',
+                color: '#ffffff',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
@@ -304,15 +317,17 @@ function EditCredentialForm() {
           style={{
             marginTop: '1rem',
             padding: '1rem',
-            backgroundColor: status.includes('❌') ? '#fee' : '#e8f5e9',
+            backgroundColor: '#0d1117',
             borderRadius: '4px',
-            color: status.includes('❌') ? '#d32f2f' : '#2e7d32'
+            color: status.includes('❌') ? '#f85149' : '#2ea043',
+            border: status.includes('❌') ? '1px solid #f85149' : '1px solid #2ea043'
           }}
         >
           {status}
         </div>
       )}
     </div>
+    </>
   );
 }
 

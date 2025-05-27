@@ -90,27 +90,7 @@ a.secondary {
   min-width: 158px;
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0.8rem;
-  background: #161b22;
-  text-align: center;
-  font-size: 0.9rem;
-  color: #8b949e;
-  border-top: 1px solid #30363d;
-  backdrop-filter: blur(8px);
-  z-index: 10;
-}
 
-.footerText {
-  background: linear-gradient(45deg, #58a6ff, #00c9a7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 500;
-}
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
@@ -124,16 +104,12 @@ a.secondary {
     border-color: transparent;
   }
 
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
+
 }
 
 @media (max-width: 600px) {
   .page {
     padding: 32px;
-    padding-bottom: 80px;
   }
 
   .main {
@@ -156,12 +132,6 @@ a.secondary {
 
   a.secondary {
     min-width: auto;
-  }
-
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
   }
 }
 

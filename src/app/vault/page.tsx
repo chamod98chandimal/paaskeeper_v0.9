@@ -123,13 +123,20 @@ function VaultContent() {
   };
 
   return (
-    <main style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '1.5rem' }}>Paaskeeper Vault</h1>
-      <p style={{ marginBottom: '2rem' }}><strong>Logged in as:</strong> {wallet}</p>
+    <>
+      <style jsx>{`
+        input::placeholder {
+          color: #6e7681 !important;
+          opacity: 1;
+        }
+      `}</style>
+      <main style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
+        <h1 style={{ marginBottom: '1.5rem', color: '#c9d1d9' }}>Paaskeeper Vault</h1>
+      <p style={{ marginBottom: '2rem', color: '#8b949e' }}><strong>Logged in as:</strong> <span style={{ color: '#58a6ff' }}>{wallet}</span></p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div>
-          <label htmlFor="website" style={{ display: 'block', marginBottom: '0.5rem' }}>Website</label>
+          <label htmlFor="website" style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9' }}>Website</label>
           <input
             type="text"
             id="website"
@@ -141,13 +148,15 @@ function VaultContent() {
               width: '100%',
               padding: '0.5rem',
               border: '1px solid #ccc',
-              borderRadius: '4px'
+              borderRadius: '4px',
+              backgroundColor: '#0d1117',
+              color: '#c9d1d9'
             }}
           />
         </div>
 
         <div>
-          <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem' }}>Username or Email</label>
+          <label htmlFor="username" style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9' }}>Username or Email</label>
           <input
             type="text"
             id="username"
@@ -159,13 +168,15 @@ function VaultContent() {
               width: '100%',
               padding: '0.5rem',
               border: '1px solid #ccc',
-              borderRadius: '4px'
+              borderRadius: '4px',
+              backgroundColor: '#0d1117',
+              color: '#c9d1d9'
             }}
           />
         </div>
 
         <div>
-          <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem' }}>Password</label>
+          <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9' }}>Password</label>
           <div style={{ position: 'relative' }}>
             <input
               type={showPassword ? "text" : "password"}
@@ -179,7 +190,9 @@ function VaultContent() {
                 padding: '0.5rem',
                 paddingRight: '2.5rem', // Make room for the icon
                 border: '1px solid #ccc',
-                borderRadius: '4px'
+                borderRadius: '4px',
+                backgroundColor: '#0d1117',
+                color: '#c9d1d9'
               }}
             />
             <button
@@ -211,8 +224,8 @@ function VaultContent() {
           style={{
             marginTop: '1rem',
             padding: '0.75rem 1rem',
-            backgroundColor: isStoring ? '#ccc' : '#4CAF50',
-            color: 'white',
+            backgroundColor: isStoring ? '#ccc' : '#2ea043',
+            color: '#ffffff',
             border: 'none',
             borderRadius: '4px',
             cursor: isStoring ? 'not-allowed' : 'pointer',
@@ -235,21 +248,27 @@ function VaultContent() {
             padding: '1rem',
             borderRadius: '4px',
             backgroundColor: status.startsWith('✅')
-              ? '#E8F5E9'
+              ? '#0d1117'
               : status.startsWith('⚠️')
-              ? '#FFF3E0'
-              : '#FFEBEE',
+              ? '#0d1117'
+              : '#0d1117',
             color: status.startsWith('✅')
-              ? '#2E7D32'
+              ? '#2ea043'
               : status.startsWith('⚠️')
-              ? '#F57C00'
-              : '#C62828'
+              ? '#f59e0b'
+              : '#f85149',
+            border: status.startsWith('✅')
+              ? '1px solid #2ea043'
+              : status.startsWith('⚠️')
+              ? '1px solid #f59e0b'
+              : '1px solid #f85149'
           }}>
             {status}
           </p>
         )}
       </div>
     </main>
+    </>
   );
 }
 

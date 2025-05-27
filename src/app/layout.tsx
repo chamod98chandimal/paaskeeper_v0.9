@@ -1,5 +1,6 @@
 import './globals.css';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { AuthProvider } from '../context/AuthContext';
 import { LoadingProvider } from '../context/LoadingContext';
 import GlobalLoadingWrapper from '../components/GlobalLoadingWrapper';
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <GlobalLoadingWrapper>
               {children}
             </GlobalLoadingWrapper>
+            <Footer />
           </AuthProvider>
         </LoadingProvider>
       </body>

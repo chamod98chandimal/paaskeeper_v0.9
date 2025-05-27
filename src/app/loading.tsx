@@ -8,7 +8,7 @@ export default function Loading() {
       left: 0,
       width: '100%',
       height: '100%',
-      backgroundColor: 'rgba(255, 255, 255, 0.95)',
+      backgroundColor: '#0d1117',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -21,12 +21,12 @@ export default function Loading() {
         size="large" 
         variant="spinner" 
         text=""
-        color="#4CAF50"
+        color="#2ea043"
       />
       <div style={{
         marginTop: '1rem',
         fontSize: '1.1rem',
-        color: '#555',
+        color: '#c9d1d9',
         fontWeight: '500'
       }}>
         Loading page...

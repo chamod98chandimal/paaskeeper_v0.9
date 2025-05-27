@@ -205,12 +205,61 @@ export default function Settings() {
   };
 
   const stopCamera = () => {
-    if (videoRef.current?.srcObject) {
-      const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
-      tracks.forEach(track => track.stop());
-      videoRef.current.srcObject = null;
+    try {
+      console.log('stopCamera called, isCameraActive:', isCameraActive);
+      console.log('videoRef.current?.srcObject:', videoRef.current?.srcObject);
+      
+      if (videoRef.current?.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        const tracks = stream.getTracks();
+        console.log('Found tracks:', tracks.length);
+        
+        tracks.forEach(track => {
+          console.log('Stopping track:', track.kind, 'state:', track.readyState);
+          track.stop();
+          console.log('Track stopped, new state:', track.readyState);
+        });
+        
+        videoRef.current.srcObject = null;
+        console.log('Video srcObject set to null');
+      }
+      
+      // Also try to pause and reset the video element
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
+      
+      setIsCameraActive(false);
+      setVerificationStatus('');
+      console.log('Camera state updated: isCameraActive = false');
+    } catch (error) {
+      console.error('Error stopping camera:', error);
+      // Force state update even if stopping fails
       setIsCameraActive(false);
     }
+  };
+
+  // Force stop camera function for debugging
+  const forceStopCamera = () => {
+    console.log('Force stopping camera...');
+    
+    // Stop all media tracks globally
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then(stream => {
+        stream.getTracks().forEach(track => track.stop());
+      })
+      .catch(err => console.log('No active streams to stop'));
+    
+    // Reset video element
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+    
+    setIsCameraActive(false);
+    setVerificationStatus('Camera force stopped');
   };
 
   const detectFace = async (): Promise<DetectionWithData | null> => {
@@ -290,6 +339,10 @@ export default function Settings() {
     }
     
     const timer = setTimeout(() => {
+      // Stop camera when timer expires
+      if (isCameraActive) {
+        stopCamera();
+      }
       setIsVerified(false);
       setActiveSection('verification');
     }, 60000); // 1 minute
@@ -304,6 +357,10 @@ export default function Settings() {
     }
     
     const timer = setTimeout(() => {
+      // Stop camera when timer expires
+      if (isCameraActive) {
+        stopCamera();
+      }
       setIsReVerified(false);
       setActiveSection('reverification');
     }, 60000); // 1 minute
@@ -311,13 +368,20 @@ export default function Settings() {
     setReVerificationTimer(timer);
   };
 
-  // Cleanup timers on unmount
+  // Cleanup timers and camera on unmount
   useEffect(() => {
     return () => {
+      // Cleanup timers
       if (verificationTimer) clearTimeout(verificationTimer);
       if (reVerificationTimer) clearTimeout(reVerificationTimer);
+      
+      // Cleanup camera on unmount
+      if (videoRef.current?.srcObject) {
+        const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
+        tracks.forEach(track => track.stop());
+      }
     };
-  }, []);
+  }, [verificationTimer, reVerificationTimer]);
 
   // Modified verification handler
   const handleVerification = async (isReverification = false) => {
@@ -332,6 +396,7 @@ export default function Settings() {
       if (!detection) {
         setVerificationStatus('No face detected. Please ensure your face is clearly visible.');
         setIsProcessing(false);
+        // Don't stop camera here - let user try again without restarting camera
         return;
       }
 
@@ -377,10 +442,14 @@ export default function Settings() {
         stopCamera();
       } else {
         setVerificationStatus(data.message || 'Verification failed. Please try again.');
+        // Stop camera on failure too, user can restart if needed
+        stopCamera();
       }
     } catch (error) {
       console.error('Verification error:', error);
       setVerificationStatus('An error occurred during verification');
+      // Stop camera on error
+      stopCamera();
     }
 
     setIsProcessing(false);
@@ -483,6 +552,10 @@ export default function Settings() {
   // Modified section click handler
   const handleSectionClick = (section: Section) => {
     if (!isSectionLocked(section)) {
+      // Stop camera when switching away from verification sections
+      if (isCameraActive && (activeSection === 'verification' || activeSection === 'reverification')) {
+        stopCamera();
+      }
       setActiveSection(section);
     }
   };
@@ -501,6 +574,7 @@ export default function Settings() {
                     ref={videoRef}
                     autoPlay
                     muted
+                    playsInline
                     style={{
                       display: isCameraActive ? 'block' : 'none',
                       maxWidth: '100%',
@@ -532,7 +606,7 @@ export default function Settings() {
                       disabled={isProcessing}
                       style={{
                         padding: '0.75rem 1.5rem',
-                        backgroundColor: '#4CAF50',
+                        backgroundColor: '#2ea043',
                         color: 'white',
                         border: 'none',
                         borderRadius: '4px',
@@ -591,6 +665,7 @@ export default function Settings() {
                     ref={videoRef}
                     autoPlay
                     muted
+                    playsInline
                     style={{
                       display: isCameraActive ? 'block' : 'none',
                       maxWidth: '100%',
@@ -780,7 +855,7 @@ export default function Settings() {
                 type="submit"
                 style={{
                   padding: '0.75rem 1.5rem',
-                  backgroundColor: '#4CAF50',
+                  backgroundColor: '#2ea043',
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',
@@ -948,7 +1023,7 @@ export default function Settings() {
       <h1 style={{
         fontSize: '2rem',
         marginBottom: '2rem',
-        color: '#333',
+        color: '#c9d1d9',
       }}>Settings</h1>
 
       <div style={{
@@ -978,7 +1053,7 @@ export default function Settings() {
                   : section === 'verification' 
                     ? '#2196F3' 
                     : section === 'setPassword' 
-                      ? '#4CAF50' 
+                      ? '#2ea043' 
                       : section === 'reverification' 
                         ? '#9C27B0' 
                         : '#FF5722',

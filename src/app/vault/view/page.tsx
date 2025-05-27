@@ -80,81 +80,92 @@ function PasswordVerification({ onVerified }: { onVerified: () => void }) {
   };
 
   return (
-    <div style={{ 
-      padding: '2rem',
-      maxWidth: '400px',
-      margin: '0 auto',
-      textAlign: 'center'
-    }}>
-      <h1 style={{ 
-        fontSize: '1.8rem',
-        fontWeight: 'bold',
-        marginBottom: '2rem'
+    <>
+      <style jsx>{`
+        input::placeholder {
+          color: #6e7681 !important;
+          opacity: 1;
+        }
+      `}</style>
+      <div style={{ 
+        padding: '2rem',
+        maxWidth: '400px',
+        margin: '0 auto',
+        textAlign: 'center'
       }}>
-        Enter Password
-      </h1>
-      <form onSubmit={handleVerifyPassword}>
-        <div style={{ position: 'relative', marginBottom: '1rem' }}>
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setError('');
-            }}
+        <h1 style={{ 
+          fontSize: '1.8rem',
+          fontWeight: 'bold',
+          marginBottom: '2rem',
+          color: '#c9d1d9'
+        }}>
+          Enter Password
+        </h1>
+        <form onSubmit={handleVerifyPassword}>
+          <div style={{ position: 'relative', marginBottom: '1rem' }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError('');
+              }}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                paddingRight: '40px',
+                border: `1px solid ${error ? '#f85149' : '#ccc'}`,
+                borderRadius: '4px',
+                fontSize: '1rem',
+                backgroundColor: '#0d1117',
+                color: '#c9d1d9'
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: '8px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                border: 'none',
+                background: 'none',
+                cursor: 'pointer',
+                color: '#666',
+                padding: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {showPassword ? '👁️‍🗨️' : '👁️'}
+            </button>
+          </div>
+          {error && (
+            <p style={{ color: '#f85149', marginBottom: '1rem' }}>
+              {error}
+            </p>
+          )}
+          <button
+            type="submit"
             style={{
               width: '100%',
               padding: '0.75rem',
-              paddingRight: '40px',
-              border: `1px solid ${error ? '#ff4444' : '#ddd'}`,
+              backgroundColor: '#2ea043',
+              color: '#ffffff',
+              border: 'none',
               borderRadius: '4px',
+              cursor: 'pointer',
               fontSize: '1rem'
             }}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            style={{
-              position: 'absolute',
-              right: '8px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              border: 'none',
-              background: 'none',
-              cursor: 'pointer',
-              color: '#666',
-              padding: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
           >
-            {showPassword ? '👁️‍🗨️' : '👁️'}
+            Unlock
           </button>
-        </div>
-        {error && (
-          <p style={{ color: '#ff4444', marginBottom: '1rem' }}>
-            {error}
-          </p>
-        )}
-        <button
-          type="submit"
-          style={{
-            width: '100%',
-            padding: '0.75rem',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '1rem'
-          }}
-        >
-          Unlock
-        </button>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 }
 
@@ -350,7 +361,7 @@ function ViewEntriesContent() {
   if (loading) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '1.2rem', color: '#666' }}>
+        <div style={{ fontSize: '1.2rem', color: '#8b949e' }}>
           Loading your stored credentials from blockchain...
         </div>
       </div>
@@ -360,7 +371,7 @@ function ViewEntriesContent() {
   if (error) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <div style={{ color: '#DC2626', marginBottom: '1rem' }}>
+        <div style={{ color: '#f85149', marginBottom: '1rem' }}>
           {error}
         </div>
         {(error.includes('Authentication') || error.includes('Unauthorized') || error.includes('401')) && (
@@ -369,7 +380,7 @@ function ViewEntriesContent() {
               onClick={handleClearAuthData}
               style={{
                 padding: '0.75rem 1.5rem',
-                backgroundColor: '#DC2626',
+                backgroundColor: '#f85149',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
@@ -384,7 +395,7 @@ function ViewEntriesContent() {
               onClick={() => window.location.reload()}
               style={{
                 padding: '0.75rem 1.5rem',
-                backgroundColor: '#4CAF50',
+                backgroundColor: '#2ea043',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
@@ -403,15 +414,15 @@ function ViewEntriesContent() {
   if (entries.length === 0) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <p style={{ marginBottom: '1rem', color: '#666' }}>No stored entries found.</p>
-        <p style={{ marginBottom: '1rem', color: '#999', fontSize: '0.9rem' }}>
+        <p style={{ marginBottom: '1rem', color: '#8b949e' }}>No stored entries found.</p>
+        <p style={{ marginBottom: '1rem', color: '#8b949e', fontSize: '0.9rem' }}>
           If you expect to see entries here, try refreshing the page or clearing authentication data.
         </p>
         <button
           onClick={() => router.push('/vault')}
           style={{
             padding: '0.75rem 1.5rem',
-            backgroundColor: '#4CAF50',
+            backgroundColor: '#2ea043',
             color: 'white',
             border: 'none',
             borderRadius: '4px',
@@ -426,7 +437,7 @@ function ViewEntriesContent() {
           onClick={() => window.location.reload()}
           style={{
             padding: '0.75rem 1.5rem',
-            backgroundColor: '#2196F3',
+            backgroundColor: '#1f6feb',
             color: 'white',
             border: 'none',
             borderRadius: '4px',
@@ -458,14 +469,14 @@ function ViewEntriesContent() {
   return (
     <div style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>Your Stored Credentials</h1>
+        <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#c9d1d9' }}>Your Stored Credentials</h1>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button
             onClick={handleRefreshEntries}
             style={{
               padding: '0.75rem 1.5rem',
-              backgroundColor: '#2196F3',
-              color: 'white',
+              backgroundColor: '#1f6feb',
+              color: '#ffffff',
               border: 'none',
               borderRadius: '4px',
               cursor: 'pointer',
@@ -478,8 +489,8 @@ function ViewEntriesContent() {
             onClick={() => router.push('/vault')}
             style={{
               padding: '0.75rem 1.5rem',
-              backgroundColor: '#4CAF50',
-              color: 'white',
+              backgroundColor: '#2ea043',
+              color: '#ffffff',
               border: 'none',
               borderRadius: '4px',
               cursor: 'pointer',
@@ -495,22 +506,22 @@ function ViewEntriesContent() {
         <div
           key={entry.id}
           style={{
-            backgroundColor: 'white',
+            backgroundColor: '#161b22',
             borderRadius: '8px',
             padding: '1.5rem',
             marginBottom: '1rem',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            border: '1px solid #e5e7eb'
+            boxShadow: '0 1px 4px rgba(0, 0, 0, 0.6)',
+            border: '1px solid #30363d'
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#1F2937' }}>{entry.website}</h2>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#c9d1d9' }}>{entry.website}</h2>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <button
                 onClick={() => router.push(`/vault/edit?id=${entry.id}`)}
                 style={{
                   padding: '0.5rem 1rem',
-                  backgroundColor: '#3B82F6',
+                  backgroundColor: '#1f6feb',
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',
@@ -524,7 +535,7 @@ function ViewEntriesContent() {
                 disabled={deleting === entry.id}
                 style={{
                   padding: '0.5rem 1rem',
-                  backgroundColor: deleting === entry.id ? '#9CA3AF' : '#DC2626',
+                  backgroundColor: deleting === entry.id ? '#9CA3AF' : '#f85149',
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',
@@ -539,15 +550,15 @@ function ViewEntriesContent() {
           <div style={{ display: 'grid', gap: '1rem' }}>
             <div>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#4B5563', width: '80px' }}>Username:</span>
+                <span style={{ color: '#8b949e', width: '80px' }}>Username:</span>
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ flex: 1 }}>{entry.username}</span>
+                  <span style={{ flex: 1, color: '#d1d5da' }}>{entry.username}</span>
                   <button
                     onClick={() => copyToClipboard(entry.username, 'username', index)}
                     style={{
                       padding: '0.25rem 0.5rem',
-                      backgroundColor: copyStatus[`${index}-username`] ? '#10B981' : '#E5E7EB',
-                      color: copyStatus[`${index}-username`] ? 'white' : '#374151',
+                      backgroundColor: copyStatus[`${index}-username`] ? '#10B981' : '#21262d',
+                      color: copyStatus[`${index}-username`] ? 'white' : '#c9d1d9',
                       border: 'none',
                       borderRadius: '4px',
                       cursor: 'pointer',
@@ -562,17 +573,17 @@ function ViewEntriesContent() {
 
             <div>
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ color: '#4B5563', width: '80px' }}>Password:</span>
+                <span style={{ color: '#8b949e', width: '80px' }}>Password:</span>
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ flex: 1 }}>
+                  <span style={{ flex: 1, color: '#d1d5da' }}>
                     {visibleEntries.has(index) ? entry.password : '••••••••'}
                   </span>
                   <button
                     onClick={() => toggleEntryVisibility(index)}
                     style={{
                       padding: '0.25rem 0.5rem',
-                      backgroundColor: '#E5E7EB',
-                      color: '#374151',
+                      backgroundColor: '#21262d',
+                      color: '#c9d1d9',
                       border: 'none',
                       borderRadius: '4px',
                       cursor: 'pointer',
@@ -585,8 +596,8 @@ function ViewEntriesContent() {
                     onClick={() => copyToClipboard(entry.password, 'password', index)}
                     style={{
                       padding: '0.25rem 0.5rem',
-                      backgroundColor: copyStatus[`${index}-password`] ? '#10B981' : '#E5E7EB',
-                      color: copyStatus[`${index}-password`] ? 'white' : '#374151',
+                      backgroundColor: copyStatus[`${index}-password`] ? '#10B981' : '#21262d',
+                      color: copyStatus[`${index}-password`] ? 'white' : '#c9d1d9',
                       border: 'none',
                       borderRadius: '4px',
                       cursor: 'pointer',
@@ -612,7 +623,7 @@ export default function ViewEntriesPage() {
     return (
       <Suspense fallback={
         <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '1.2rem', color: '#666' }}>
+          <div style={{ fontSize: '1.2rem', color: '#8b949e' }}>
             Loading...
           </div>
         </div>
@@ -625,7 +636,7 @@ export default function ViewEntriesPage() {
   return (
     <Suspense fallback={
       <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <div style={{ fontSize: '1.2rem', color: '#666' }}>
+        <div style={{ fontSize: '1.2rem', color: '#8b949e' }}>
           Loading...
         </div>
       </div>

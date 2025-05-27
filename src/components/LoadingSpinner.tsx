@@ -11,7 +11,7 @@ export default function LoadingSpinner({
   size = 'medium', 
   variant = 'spinner', 
   text = 'Loading...', 
-  color = '#4CAF50' 
+  color = '#2ea043'
 }: LoadingSpinnerProps) {
   const sizeClasses = {
     small: { width: '20px', height: '20px', fontSize: '0.8rem' },
@@ -24,7 +24,7 @@ export default function LoadingSpinner({
   const spinnerStyle: React.CSSProperties = {
     width: currentSize.width,
     height: currentSize.height,
-    border: `3px solid rgba(0, 0, 0, 0.1)`,
+    border: `3px solid rgba(139, 148, 158, 0.2)`,
     borderTop: `3px solid ${color}`,
     borderRadius: '50%',
     animation: 'spin 1s linear infinite'
@@ -62,7 +62,7 @@ export default function LoadingSpinner({
 
   const textStyle: React.CSSProperties = {
     fontSize: currentSize.fontSize,
-    color: '#666',
+    color: '#c9d1d9',
     fontWeight: '500'
   };
 

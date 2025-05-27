@@ -154,7 +154,7 @@ export default function RegisterPage() {
           style={{
             marginTop: '1rem',
             padding: '0.75rem 1rem',
-            backgroundColor: isRegistering ? '#ccc' : '#4CAF50',
+            backgroundColor: isRegistering ? '#ccc' : '#2ea043',
             color: 'white',
             border: 'none',
             borderRadius: '4px',

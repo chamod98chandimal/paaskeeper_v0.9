@@ -117,7 +117,7 @@ export function LitDebug() {
         onClick={testLitProtocol}
         style={{
           padding: '0.75rem 1.5rem',
-          backgroundColor: '#4CAF50',
+          backgroundColor: '#2ea043',
           color: 'white',
           border: 'none',
           borderRadius: '4px',
