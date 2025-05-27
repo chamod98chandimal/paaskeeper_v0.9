@@ -331,7 +331,7 @@ export default function Home() {
 
             <div className={styles.teamCard}>
               <div className={styles.teamPhoto}>
-                <img src="/images/team/T.P.Rathnayaka.jpg" alt="T.P.Rathnayaka" className={styles.teamImage} />
+                <img src="/images/team/thash.jpg" alt="T.P.Rathnayaka" className={styles.teamImage} />
               </div>
               <h3 className={styles.teamName}>T.P.Rathnayaka</h3>
               {/* <p className={styles.teamRole}>Security Engineer</p> */}
