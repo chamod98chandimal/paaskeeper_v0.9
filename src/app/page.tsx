@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <>
+    <div className={styles.page}>
       <main className={styles.homeContainer}>
         <section className={styles.featuresSection}>
           <div className={styles.featureCard}>
@@ -55,13 +55,25 @@ export default function Home() {
             <div className={styles.howToUseIcon}>📋</div>
             <h2 className={styles.howToUseTitle}>How to Use Paaskeeper</h2>
             <p className={styles.howToUseSubtitle}>
-              Get started with Paaskeeper in 3 simple steps
+              Get started with Paaskeeper in 4 simple steps
             </p>
           </div>
           
           <div className={styles.stepsContainer}>
             <div className={styles.stepCard}>
               <div className={styles.stepNumber}>1</div>
+              <div className={styles.faucetLogo}>
+                <img src="/images/faucets/metamask.png" alt="MetaMask" className={styles.faucetImage} />
+              </div>
+              {/* <div className={styles.stepIcon}>🦊</div> */}
+              <h3 className={styles.stepTitle}>Login with MetaMask</h3>
+              <p className={styles.stepDescription}>
+                Connect your MetaMask wallet to securely authenticate and access your Paaskeeper vault.
+              </p>
+            </div>
+
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>2</div>
               <div className={styles.stepIcon}>🔐</div>
               <h3 className={styles.stepTitle}>Create Your Vault</h3>
               <p className={styles.stepDescription}>
@@ -70,7 +82,7 @@ export default function Home() {
             </div>
 
             <div className={styles.stepCard}>
-              <div className={styles.stepNumber}>2</div>
+              <div className={styles.stepNumber}>3</div>
               <div className={styles.stepIcon}>📝</div>
               <h3 className={styles.stepTitle}>Add Your Passwords</h3>
               <p className={styles.stepDescription}>
@@ -79,12 +91,84 @@ export default function Home() {
             </div>
 
             <div className={styles.stepCard}>
-              <div className={styles.stepNumber}>3</div>
+              <div className={styles.stepNumber}>4</div>
               <div className={styles.stepIcon}>🚀</div>
               <h3 className={styles.stepTitle}>Access Anywhere</h3>
               <p className={styles.stepDescription}>
                 Use auto-fill on any device, sync across all platforms, and enjoy secure access to your digital life.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.howToUseSection}>
+          <div className={styles.howToUseHeader}>
+            <div className={styles.howToUseIcon}>💧</div>
+            <h2 className={styles.howToUseTitle}>How to Get Ethereum Sepolia</h2>
+            <p className={styles.howToUseSubtitle}>
+              Get testnet ETH for Sepolia network to interact with Paaskeeper
+            </p>
+          </div>
+          
+          <div className={styles.faucetStepsContainer}>
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>1</div>
+              <div className={styles.faucetLogo}>
+                <img src="/images/faucets/google-cloud.svg" alt="Google Cloud" className={styles.faucetImage} />
+              </div>
+              {/* <div className={styles.stepIcon}>🚰</div> */}
+              <h3 className={styles.stepTitle}>Google Cloud Faucet</h3>
+              <p className={styles.stepDescription}>
+                Get free Sepolia ETH from Google Cloud's official faucet. Fast and reliable.
+              </p>
+              <a 
+                href="https://cloud.google.com/application/web3/faucet/ethereum/sepolia" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={styles.faucetLink}
+              >
+                Visit Google Cloud Faucet →
+              </a>
+            </div>
+
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>2</div>
+              <div className={styles.faucetLogo}>
+                <img src="/images/faucets/alchemy.png" alt="Alchemy" className={styles.faucetImage} />
+              </div>
+              {/* <div className={styles.stepIcon}>⚗️</div> */}
+              <h3 className={styles.stepTitle}>Alchemy Faucet</h3>
+              <p className={styles.stepDescription}>
+                Alternative faucet provided by Alchemy. Great backup option with easy-to-use interface.
+              </p>
+              <a 
+                href="https://www.alchemy.com/faucets/ethereum-sepolia" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={styles.faucetLink}
+              >
+                Visit Alchemy Faucet →
+              </a>
+            </div>
+
+            <div className={styles.stepCard}>
+              <div className={styles.stepNumber}>3</div>
+              <div className={styles.faucetLogo}>
+                <img src="/images/faucets/testnet-bridge.svg" alt="Testnet Bridge" className={styles.faucetImage} />
+              </div>
+              {/* <div className={styles.stepIcon}>🌉</div> */}
+              <h3 className={styles.stepTitle}>Testnet Bridge</h3>
+              <p className={styles.stepDescription}>
+                Bridge ETH from Ethereum mainnet to Sepolia testnet. Useful if you have mainnet ETH to convert.
+              </p>
+              <a 
+                href="https://testnetbridge.com/sepolia" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={styles.faucetLink}
+              >
+                Visit Testnet Bridge →
+              </a>
             </div>
           </div>
         </section>
@@ -309,6 +393,6 @@ export default function Home() {
       <footer className={styles.footer}>
         <span className={styles.footerText}>VMTEK Works @ 2025</span>
       </footer>
-    </>
+    </div>
   );
 }

@@ -9,7 +9,9 @@ export default function Navbar() {
   return (
     <nav style={{ 
       padding: '1rem', 
-      background: '#eee', 
+      background: '#161b22', 
+      backdropFilter: 'blur(10px)',
+      border: '1px solid #30363d',
       marginBottom: '2rem',
       display: 'flex',
       alignItems: 'center',
@@ -19,16 +21,16 @@ export default function Navbar() {
         marginRight: '1rem',
         fontSize: '1rem',
         textDecoration: 'none',
-        color: '#333',
-        fontWeight: 500
+        color: '#58a6ff',
+        fontWeight: 600
       }}>Home</Link>
       {!isAuthenticated ? (
         <Link href="/login" style={{ 
           marginRight: '1rem',
           fontSize: '1rem',
           textDecoration: 'none',
-          color: '#333',
-          fontWeight: 500
+          color: '#58a6ff',
+          fontWeight: 600
         }}>Login</Link>
       ) : (
         <>
@@ -36,22 +38,22 @@ export default function Navbar() {
             marginRight: '1rem',
             fontSize: '1rem',
             textDecoration: 'none',
-            color: '#333',
-            fontWeight: 500
+            color: '#58a6ff',
+            fontWeight: 600
           }}>Store</Link>
           <Link href="/vault/view" style={{ 
             marginRight: '1rem',
             fontSize: '1rem',
             textDecoration: 'none',
-            color: '#333',
-            fontWeight: 500
+            color: '#58a6ff',
+            fontWeight: 600
           }}>View</Link>
           <Link href="/settings" style={{ 
             marginRight: '1rem',
             fontSize: '1rem',
             textDecoration: 'none',
-            color: '#333',
-            fontWeight: 500
+            color: '#58a6ff',
+            fontWeight: 600
           }}>Settings</Link>
           <button 
             onClick={logout}
@@ -59,9 +61,9 @@ export default function Navbar() {
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              color: '#333',
+              color: '#58a6ff',
               fontSize: '1rem',
-              fontWeight: 500,
+              fontWeight: 600,
               padding: 0
             }}
           >
