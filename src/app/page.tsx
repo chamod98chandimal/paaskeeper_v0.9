@@ -309,18 +309,22 @@ export default function Home() {
 
             <div className={styles.teamCard}>
               <div className={styles.teamPhoto}>
-                <img src="/images/team/sarah-chen.jpg" alt="Sarah Chen" className={styles.teamImage} />
+                <img src="/images/team/sara.jpg" alt="M.T.M.S Dissanayake" className={styles.teamImage} />
               </div>
-              <h3 className={styles.teamName}>Sarah Chen</h3>
+              <h3 className={styles.teamName}>M.T.M.S Dissanayake</h3>
               {/* <p className={styles.teamRole}>CTO</p> */}
               <div className={styles.teamContacts}>
-                <a href="mailto:sarah@paaskeeper.com" className={styles.contactLink}>
+                <a href="methsara0211@gmail.com" className={styles.contactLink}>
                   <span className={styles.contactIcon}>📧</span>
-                  sarah@paaskeeper.com
+                  methsara0211@gmail.com
                 </a>
-                <a href="https://linkedin.com/in/sarahchen" className={styles.contactLink}>
+                <a href="https://www.linkedin.com/methsara-dissanayake/" className={styles.contactLink}>
                   <span className={styles.contactIcon}>💼</span>
                   LinkedIn
+                </a>
+                <a href="https://github.com/methsara1" className={styles.contactLink}>
+                  <span className={styles.contactIcon}>⚡</span>
+                  GitHub
                 </a>
               </div>
             </div>
