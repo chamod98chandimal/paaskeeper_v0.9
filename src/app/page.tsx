@@ -285,12 +285,13 @@ export default function Home() {
               <div className={styles.teamPhoto}>
                 <img src="/images/team/era.jpeg" alt="era" className={styles.teamImage} />
               </div>
-              <h3 className={styles.teamName}>N.D.C.C.E.Dissanayake</h3>
+              <h3 className={styles.teamName}>N.D.C.C.E. Dissanayake</h3>
               {/* <p className={styles.teamRole}>CEO & Founder</p> */}
               <div className={styles.teamContacts}>
-                <a href="chamod983.bitcoin@ud.me" className={styles.contactLink}>
+                <a href="chamod983.bitcoin@ud.me" className={`${styles.contactLink} ${styles.emailLink}`}>
                   <span className={styles.contactIcon}>📧</span>
-                  chamod983.bitcoin@ud.me
+                  <span className={styles.emailText}>chamod983.bitcoin@ud.me</span>
+                  <span className={styles.emailLabel}>Email</span>
                 </a>
                 <a href="https://www.linkedin.com/in/chamodchandimal/" className={styles.contactLink}>
                   <span className={styles.contactIcon}>💼</span>
@@ -314,9 +315,10 @@ export default function Home() {
               <h3 className={styles.teamName}>M.T.M.S Dissanayake</h3>
               {/* <p className={styles.teamRole}>CTO</p> */}
               <div className={styles.teamContacts}>
-                <a href="methsara0211@gmail.com" className={styles.contactLink}>
+                <a href="methsara0211@gmail.com" className={`${styles.contactLink} ${styles.emailLink}`}>
                   <span className={styles.contactIcon}>📧</span>
-                  methsara0211@gmail.com
+                  <span className={styles.emailText}>methsara0211@gmail.com</span>
+                  <span className={styles.emailLabel}>Email</span>
                 </a>
                 <a href="https://www.linkedin.com/methsara-dissanayake/" className={styles.contactLink}>
                   <span className={styles.contactIcon}>💼</span>
@@ -331,14 +333,15 @@ export default function Home() {
 
             <div className={styles.teamCard}>
               <div className={styles.teamPhoto}>
-                <img src="/images/team/thash.jpg" alt="T.P.Rathnayaka" className={styles.teamImage} />
+                <img src="/images/team/thash.jpg" alt="T.P. Rathnayaka" className={styles.teamImage} />
               </div>
-              <h3 className={styles.teamName}>T.P.Rathnayaka</h3>
+              <h3 className={styles.teamName}>T.P. Rathnayaka</h3>
               {/* <p className={styles.teamRole}>Security Engineer</p> */}
               <div className={styles.teamContacts}>
-                <a href="rathnayakapaboda79@gmail.com" className={styles.contactLink}>
+                <a href="rathnayakapaboda79@gmail.com" className={`${styles.contactLink} ${styles.emailLink}`}>
                   <span className={styles.contactIcon}>📧</span>
-                  rathnayakapaboda79@gmail.com
+                  <span className={styles.emailText}>rathnayakapaboda79@gmail.com</span>
+                  <span className={styles.emailLabel}>Email</span>
                 </a>
                 <a href="http://www.linkedin.com/in/thashmi-rathnayaka-408bbb29b" className={styles.contactLink}>
                   <span className={styles.contactIcon}>💼</span>
@@ -357,14 +360,15 @@ export default function Home() {
 
             <div className={styles.teamCard}>
               <div className={styles.teamPhoto}>
-                <img src="/images/team/kavi1.jpeg" alt="D.M.K.P.Dissanayaka" className={styles.teamImage} />
+                <img src="/images/team/kavi1.jpeg" alt="D.M.K.P. Dissanayaka" className={styles.teamImage} />
               </div>
-              <h3 className={styles.teamName}>D.M.K.P.Dissanayaka</h3>
+              <h3 className={styles.teamName}>D.M.K.P. Dissanayaka</h3>
               {/* <p className={styles.teamRole}>UI/UX Designer</p> */}
               <div className={styles.teamContacts}>
-                <a href="kavindradissanayaka1998@gmail.com" className={styles.contactLink}>
+                <a href="kavindradissanayaka1998@gmail.com" className={`${styles.contactLink} ${styles.emailLink}`}>
                   <span className={styles.contactIcon}>📧</span>
-                  kavindradissanayaka1998@gmail.com
+                  <span className={styles.emailText}>kavindradissanayaka1998@gmail.com</span>
+                  <span className={styles.emailLabel}>Email</span>
                 </a>
                 <a href="https://www.linkedin.com/in/kaveendradissanayaka" className={styles.contactLink}>
                   <span className={styles.contactIcon}>💼</span>
@@ -383,14 +387,15 @@ export default function Home() {
 
             <div className={styles.teamCard}>
               <div className={styles.teamPhoto}>
-                <img src="/images/team/venuri.jpg" alt="R.T.V.Rathnasuriya" className={styles.teamImage} />
+                <img src="/images/team/venuri.jpg" alt="R.T.V. Rathnasuriya" className={styles.teamImage} />
               </div>
-              <h3 className={styles.teamName}>R.T.V.Rathnasuriya</h3>
+              <h3 className={styles.teamName}>R.T.V. Rathnasuriya</h3>
               {/* <p className={styles.teamRole}>Blockchain Developer</p> */}
               <div className={styles.teamContacts}>
-                <a href="thathsaranirathnasooriya@gmail.com" className={styles.contactLink}>
+                <a href="thathsaranirathnasooriya@gmail.com" className={`${styles.contactLink} ${styles.emailLink}`}>
                   <span className={styles.contactIcon}>📧</span>
-                  thathsaranirathnasooriya@gmail.com
+                  <span className={styles.emailText}>thathsaranirathnasooriya@gmail.com</span>
+                  <span className={styles.emailLabel}>Email</span>
                 </a>
                 <a href="www.linkedin.com/in/thathsarani-rathnasuriya-804015290" className={styles.contactLink}>
                   <span className={styles.contactIcon}>💼</span>

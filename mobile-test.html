@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+        }
+        
+        .test-container {
+            max-width: 400px;
+            margin: 0 auto;
+            border: 2px solid #58a6ff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .test-card {
+            background: #161b22;
+            padding: 1rem;
+            border-radius: 16px;
+            border: 1px solid #30363d;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .test-title {
+            font-size: 1.2rem;
+            color: #58a6ff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .test-description {
+            font-size: 0.9rem;
+            color: #8b949e;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .test-container {
+                max-width: 100%;
+                margin: 0;
+            }
+            
+            .test-card {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Mobile Layout Test</h1>
+        <p>This is a test to verify mobile layout is working. Resize your browser window or view on mobile.</p>
+        
+        <div class="test-card">
+            <div class="test-title">Test Card 1</div>
+            <div class="test-description">This card should display properly on mobile devices with full text visible and proper spacing.</div>
+        </div>
+        
+        <div class="test-card">
+            <div class="test-title">Test Card 2</div>
+            <div class="test-description">Another test card to verify the mobile layout is working correctly. All text should be readable.</div>
+        </div>
+        
+        <div class="test-card">
+            <div class="test-title">Test Card 3</div>
+            <div class="test-description">Final test card to ensure the mobile optimization is functioning as expected.</div>
+        </div>
+        
+        <p><strong>Instructions:</strong></p>
+        <ul>
+            <li>Open browser developer tools</li>
+            <li>Toggle device toolbar (mobile view)</li>
+            <li>Test different screen sizes</li>
+            <li>Verify all text is visible and readable</li>
+        </ul>
+        
+        <p><a href="http://localhost:3000" style="color: #58a6ff;">← Back to Paaskeeper</a></p>
+    </div>
+</body>
+</html> 
