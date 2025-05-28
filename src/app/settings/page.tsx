@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useLoading } from '../../context/LoadingContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -177,15 +177,26 @@ export default function Settings() {
     initializeFaceApi();
 
     return () => {
+      // Use enhanced cleanup on component unmount
       if (videoRef.current?.srcObject) {
         const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
         tracks.forEach(track => track.stop());
+        videoRef.current.srcObject = null;
       }
     };
   }, []);
 
   const startCamera = async () => {
     try {
+      // Clean up any existing camera stream first
+      if (videoRef.current?.srcObject) {
+        const existingStream = videoRef.current.srcObject as MediaStream;
+        existingStream.getTracks().forEach(track => {
+          track.stop();
+        });
+        videoRef.current.srcObject = null;
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: {
           width: { ideal: 640 },
@@ -193,6 +204,7 @@ export default function Settings() {
           facingMode: 'user'
         } 
       });
+      
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         setIsCameraActive(true);
@@ -201,6 +213,7 @@ export default function Settings() {
     } catch (error) {
       console.error('Error accessing camera:', error);
       setVerificationStatus('Error accessing camera. Please ensure you have granted camera permissions.');
+      setIsCameraActive(false);
     }
   };
 
@@ -228,6 +241,8 @@ export default function Settings() {
       if (videoRef.current) {
         videoRef.current.pause();
         videoRef.current.currentTime = 0;
+        // Force a reload of the video element to ensure it's completely reset
+        videoRef.current.load();
       }
       
       setIsCameraActive(false);
@@ -237,30 +252,58 @@ export default function Settings() {
       console.error('Error stopping camera:', error);
       // Force state update even if stopping fails
       setIsCameraActive(false);
+      setVerificationStatus('');
     }
   };
 
-  // Force stop camera function for debugging
-  const forceStopCamera = () => {
-    console.log('Force stopping camera...');
-    
-    // Stop all media tracks globally
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      .then(stream => {
-        stream.getTracks().forEach(track => track.stop());
-      })
-      .catch(err => console.log('No active streams to stop'));
-    
-    // Reset video element
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+  // Enhanced camera cleanup function
+  const cleanupCamera = useCallback(() => {
+    try {
+      // First, immediately update state to hide video
+      setIsCameraActive(false);
+      setIsProcessing(false);
+      
+      // Stop all tracks from the current video stream
+      if (videoRef.current?.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        const tracks = stream.getTracks();
+        
+        tracks.forEach((track) => {
+          track.stop();
+        });
+        
+        // Clear the video source
+        videoRef.current.srcObject = null;
+      }
+
+      // Reset video element completely
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+        videoRef.current.load();
+        
+        // Force hide the video element
+        videoRef.current.style.display = 'none';
+      }
+
+      // Clear verification status after a short delay to show success message briefly
+      setTimeout(() => {
+        setVerificationStatus('');
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Error in cleanupCamera:', error);
+      // Force state reset even if cleanup fails
+      setIsCameraActive(false);
+      setVerificationStatus('');
+      setIsProcessing(false);
+      
+      // Force hide video element even on error
+      if (videoRef.current) {
+        videoRef.current.style.display = 'none';
+      }
     }
-    
-    setIsCameraActive(false);
-    setVerificationStatus('Camera force stopped');
-  };
+  }, []);
 
   const detectFace = async (): Promise<DetectionWithData | null> => {
     if (!videoRef.current || !faceApi) return null;
@@ -341,7 +384,7 @@ export default function Settings() {
     const timer = setTimeout(() => {
       // Stop camera when timer expires
       if (isCameraActive) {
-        stopCamera();
+        cleanupCamera();
       }
       setIsVerified(false);
       setActiveSection('verification');
@@ -359,7 +402,7 @@ export default function Settings() {
     const timer = setTimeout(() => {
       // Stop camera when timer expires
       if (isCameraActive) {
-        stopCamera();
+        cleanupCamera();
       }
       setIsReVerified(false);
       setActiveSection('reverification');
@@ -375,13 +418,31 @@ export default function Settings() {
       if (verificationTimer) clearTimeout(verificationTimer);
       if (reVerificationTimer) clearTimeout(reVerificationTimer);
       
-      // Cleanup camera on unmount
-      if (videoRef.current?.srcObject) {
-        const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
-        tracks.forEach(track => track.stop());
-      }
+      // Cleanup camera on unmount using enhanced cleanup
+      cleanupCamera();
     };
-  }, [verificationTimer, reVerificationTimer]);
+  }, [verificationTimer, reVerificationTimer, cleanupCamera]);
+
+  // Handle camera cleanup when switching away from verification sections
+  useEffect(() => {
+    // If we're not in a verification section and camera is active, clean it up
+    if (activeSection !== 'verification' && activeSection !== 'reverification' && isCameraActive) {
+      cleanupCamera();
+    }
+  }, [activeSection, isCameraActive, cleanupCamera]);
+
+  // Force video element hiding when camera is not active
+  useEffect(() => {
+    if (videoRef.current) {
+      if (!isCameraActive) {
+        videoRef.current.style.display = 'none';
+        videoRef.current.style.visibility = 'hidden';
+      } else {
+        videoRef.current.style.display = 'block';
+        videoRef.current.style.visibility = 'visible';
+      }
+    }
+  }, [isCameraActive]);
 
   // Modified verification handler
   const handleVerification = async (isReverification = false) => {
@@ -426,6 +487,9 @@ export default function Settings() {
       const data = await response.json();
 
       if (data.success) {
+        // Immediately stop camera first
+        cleanupCamera();
+        
         if (isReverification) {
           setIsReVerified(true);
           setActiveSection('resetPassword');
@@ -439,17 +503,16 @@ export default function Settings() {
           await updateUserStatus({ isVerified: true });
           setVerificationStatus('Verification successful! You can now set your password.');
         }
-        stopCamera();
       } else {
         setVerificationStatus(data.message || 'Verification failed. Please try again.');
-        // Stop camera on failure too, user can restart if needed
-        stopCamera();
+        // Use enhanced cleanup function for failed verification
+        cleanupCamera();
       }
     } catch (error) {
       console.error('Verification error:', error);
       setVerificationStatus('An error occurred during verification');
-      // Stop camera on error
-      stopCamera();
+      // Use enhanced cleanup function for error cases
+      cleanupCamera();
     }
 
     setIsProcessing(false);
@@ -554,7 +617,7 @@ export default function Settings() {
     if (!isSectionLocked(section)) {
       // Stop camera when switching away from verification sections
       if (isCameraActive && (activeSection === 'verification' || activeSection === 'reverification')) {
-        stopCamera();
+        cleanupCamera();
       }
       setActiveSection(section);
     }
@@ -578,7 +641,8 @@ export default function Settings() {
                     style={{
                       display: isCameraActive ? 'block' : 'none',
                       maxWidth: '100%',
-                      margin: '0 auto'
+                      margin: '0 auto',
+                      visibility: isCameraActive ? 'visible' : 'hidden'
                     }}
                   />
                   <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -619,7 +683,7 @@ export default function Settings() {
                       {isProcessing ? 'Processing...' : 'Verify Face'}
                     </button>
                     <button
-                      onClick={stopCamera}
+                      onClick={cleanupCamera}
                       disabled={isProcessing}
                       style={{
                         padding: '0.75rem 1.5rem',
@@ -669,7 +733,8 @@ export default function Settings() {
                     style={{
                       display: isCameraActive ? 'block' : 'none',
                       maxWidth: '100%',
-                      margin: '0 auto'
+                      margin: '0 auto',
+                      visibility: isCameraActive ? 'visible' : 'hidden'
                     }}
                   />
                   <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -710,7 +775,7 @@ export default function Settings() {
                       {isProcessing ? 'Processing...' : 'Re-verify Face'}
                     </button>
                     <button
-                      onClick={stopCamera}
+                      onClick={cleanupCamera}
                       disabled={isProcessing}
                       style={{
                         padding: '0.75rem 1.5rem',
