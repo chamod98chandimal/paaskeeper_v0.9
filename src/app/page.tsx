@@ -40,7 +40,7 @@ export default function Home() {
 
         <section className={styles.heroSection}>
           <div className={styles.lockIcon}>🔐</div>
-          <h1 className={styles.title}>Welcome to Paaskeeper Beta 0.2</h1>
+          <h1 className={styles.title}>Welcome to Passkeeper Beta 0.2</h1>
           <p className={styles.subtitle}>
             The modern, secure solution for managing your passwords and two-factor authentication. Keep your digital life safe and organized.
           </p>
@@ -59,17 +59,24 @@ export default function Home() {
           </div>
           
           <div className={styles.stepsContainer}>
-            <div className={styles.stepCard}>
-              <div className={styles.stepNumber}>1</div>
-              <div className={styles.faucetLogo}>
-                <img src="/images/faucets/metamask.png" alt="MetaMask" className={styles.faucetImage} />
+            <a 
+              href="https://metamask.io/download" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={styles.stepCardLink}
+            >
+              <div className={styles.stepCard}>
+                <div className={styles.stepNumber}>1</div>
+                <div className={styles.faucetLogo}>
+                  <img src="/images/faucets/metamask.png" alt="MetaMask" className={styles.faucetImage} />
+                </div>
+                {/* <div className={styles.stepIcon}>🦊</div> */}
+                <h3 className={styles.stepTitle}>Login with MetaMask</h3>
+                <p className={styles.stepDescription}>
+                  Connect your MetaMask wallet to securely authenticate and access your Paaskeeper vault.
+                </p>
               </div>
-              {/* <div className={styles.stepIcon}>🦊</div> */}
-              <h3 className={styles.stepTitle}>Login with MetaMask</h3>
-              <p className={styles.stepDescription}>
-                Connect your MetaMask wallet to securely authenticate and access your Paaskeeper vault.
-              </p>
-            </div>
+            </a>
 
             <div className={styles.stepCard}>
               <div className={styles.stepNumber}>2</div>
@@ -85,7 +92,7 @@ export default function Home() {
               <div className={styles.stepIcon}>📝</div>
               <h3 className={styles.stepTitle}>Add Your Passwords</h3>
               <p className={styles.stepDescription}>
-                Import existing passwords or create new ones. Paaskeeper will generate strong, unique passwords for all your accounts.
+                Import existing passwords or create new ones.
               </p>
             </div>
 
@@ -94,7 +101,7 @@ export default function Home() {
               <div className={styles.stepIcon}>🚀</div>
               <h3 className={styles.stepTitle}>Access Anywhere</h3>
               <p className={styles.stepDescription}>
-                Use auto-fill on any device, sync across all platforms, and enjoy secure access to your digital life.
+                Sync across all platforms, and enjoy secure access to your digital life.
               </p>
             </div>
           </div>

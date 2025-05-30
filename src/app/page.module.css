@@ -1181,6 +1181,18 @@ a.secondary {
   border: 1px solid rgba(59,130,246,0.3);
 }
 
+.stepCardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+
+.stepCardLink:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
 .stepNumber {
   position: absolute;
   top: 1rem;

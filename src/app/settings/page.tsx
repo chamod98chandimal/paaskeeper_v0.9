@@ -89,7 +89,6 @@ export default function Settings() {
       }
 
       try {
-        showPageLoader('Loading settings...');
         const response = await fetch(`/api/auth/status?walletAddress=${account}`);
         const data = await response.json();
 
@@ -119,12 +118,11 @@ export default function Settings() {
         console.error('Error fetching user status:', error);
       } finally {
         setIsLoading(false);
-        hidePageLoader();
       }
     };
 
     fetchUserStatus();
-  }, [account, showPageLoader, hidePageLoader]);
+  }, [account]);
 
   // Update user status in database
   const updateUserStatus = async (update: {
@@ -534,6 +532,7 @@ export default function Settings() {
     }
 
     try {
+      showPageLoader('Setting password...');
       const response = await fetch('/api/auth/set-password', {
         method: 'POST',
         headers: {
@@ -563,6 +562,8 @@ export default function Settings() {
     } catch (error) {
       setPasswordError('Failed to set password. Please try again.');
       console.error('Error setting password:', error);
+    } finally {
+      hidePageLoader();
     }
   };
 
@@ -581,6 +582,7 @@ export default function Settings() {
     }
 
     try {
+      showPageLoader('Resetting password...');
       const response = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: {
@@ -609,6 +611,8 @@ export default function Settings() {
     } catch (error) {
       setResetPasswordError('Failed to reset password. Please try again.');
       console.error('Error resetting password:', error);
+    } finally {
+      hidePageLoader();
     }
   };
 
@@ -642,7 +646,8 @@ export default function Settings() {
                       display: isCameraActive ? 'block' : 'none',
                       maxWidth: '100%',
                       margin: '0 auto',
-                      visibility: isCameraActive ? 'visible' : 'hidden'
+                      visibility: isCameraActive ? 'visible' : 'hidden',
+                      transform: 'scaleX(-1)'
                     }}
                   />
                   <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -670,17 +675,35 @@ export default function Settings() {
                       disabled={isProcessing}
                       style={{
                         padding: '0.75rem 1.5rem',
-                        backgroundColor: '#2ea043',
+                        backgroundColor: isProcessing ? '#ccc' : '#2ea043',
                         color: 'white',
                         border: 'none',
                         borderRadius: '4px',
                         cursor: isProcessing ? 'default' : 'pointer',
                         fontSize: '1rem',
-                        opacity: isProcessing ? 0.7 : 1,
-                        marginRight: '1rem'
+                        opacity: isProcessing ? 0.8 : 1,
+                        marginRight: '1rem',
+                        position: 'relative',
+                        minWidth: '140px'
                       }}
                     >
-                      {isProcessing ? 'Processing...' : 'Verify Face'}
+                      {isProcessing ? (
+                        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <span style={{
+                            display: 'inline-block',
+                            width: '16px',
+                            height: '16px',
+                            border: '2px solid transparent',
+                            borderTop: '2px solid white',
+                            borderRadius: '50%',
+                            animation: 'spin 1s linear infinite',
+                            marginRight: '8px'
+                          }}></span>
+                          Verifying...
+                        </span>
+                      ) : (
+                        'Verify Face'
+                      )}
                     </button>
                     <button
                       onClick={cleanupCamera}
@@ -734,7 +757,8 @@ export default function Settings() {
                       display: isCameraActive ? 'block' : 'none',
                       maxWidth: '100%',
                       margin: '0 auto',
-                      visibility: isCameraActive ? 'visible' : 'hidden'
+                      visibility: isCameraActive ? 'visible' : 'hidden',
+                      transform: 'scaleX(-1)'
                     }}
                   />
                   <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -762,17 +786,35 @@ export default function Settings() {
                       disabled={isProcessing}
                       style={{
                         padding: '0.75rem 1.5rem',
-                        backgroundColor: '#9C27B0',
+                        backgroundColor: isProcessing ? '#ccc' : '#9C27B0',
                         color: 'white',
                         border: 'none',
                         borderRadius: '4px',
                         cursor: isProcessing ? 'default' : 'pointer',
                         fontSize: '1rem',
-                        opacity: isProcessing ? 0.7 : 1,
-                        marginRight: '1rem'
+                        opacity: isProcessing ? 0.8 : 1,
+                        marginRight: '1rem',
+                        position: 'relative',
+                        minWidth: '160px'
                       }}
                     >
-                      {isProcessing ? 'Processing...' : 'Re-verify Face'}
+                      {isProcessing ? (
+                        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <span style={{
+                            display: 'inline-block',
+                            width: '16px',
+                            height: '16px',
+                            border: '2px solid transparent',
+                            borderTop: '2px solid white',
+                            borderRadius: '50%',
+                            animation: 'spin 1s linear infinite',
+                            marginRight: '8px'
+                          }}></span>
+                          Re-verifying...
+                        </span>
+                      ) : (
+                        'Re-verify Face'
+                      )}
                     </button>
                     <button
                       onClick={cleanupCamera}
@@ -1085,6 +1127,12 @@ export default function Settings() {
       margin: '0 auto',
       padding: '2rem',
     }}>
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
       <h1 style={{
         fontSize: '2rem',
         marginBottom: '2rem',

@@ -142,6 +142,7 @@ export default function LoginPage() {
           disabled={loading}
           style={{
             width: '100%',
+            height: '60px',
             padding: '1rem 2rem',
             backgroundColor: loading ? '#ccc' : '#2ea043',
             color: 'white',
@@ -154,7 +155,9 @@ export default function LoginPage() {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '0.5rem',
-            transition: 'background-color 0.2s ease'
+            transition: 'background-color 0.2s ease',
+            minHeight: '60px',
+            boxSizing: 'border-box'
           }}
         >
           {loading && <LoadingSpinner size="small" variant="spinner" text="" />}

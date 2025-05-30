@@ -136,14 +136,14 @@ function VaultContent() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div>
-          <label htmlFor="website" style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9' }}>Website</label>
+          <label htmlFor="website" style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9' }}>Website or App name</label>
           <input
             type="text"
             id="website"
             name="website"
             value={formData.website}
             onChange={handleInputChange}
-            placeholder="Enter website URL"
+            placeholder="Enter website URL or App name"
             style={{
               width: '100%',
               padding: '0.5rem',
@@ -213,7 +213,7 @@ function VaultContent() {
               }}
               title={showPassword ? 'Hide password' : 'Show password'}
             >
-              {showPassword ? '👁️' : '👁️‍🗨️'}
+              {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
         </div>
@@ -224,6 +224,8 @@ function VaultContent() {
           style={{
             marginTop: '1rem',
             padding: '0.75rem 1rem',
+            height: '3rem',
+            minHeight: '3rem',
             backgroundColor: isStoring ? '#ccc' : '#2ea043',
             color: '#ffffff',
             border: 'none',
@@ -247,6 +249,7 @@ function VaultContent() {
             marginTop: '1rem',
             padding: '1rem',
             borderRadius: '4px',
+            fontSize: '0.875rem',
             backgroundColor: status.startsWith('✅')
               ? '#0d1117'
               : status.startsWith('⚠️')

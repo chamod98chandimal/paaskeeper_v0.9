@@ -140,7 +140,7 @@ function PasswordVerification({ onVerified }: { onVerified: () => void }) {
                 justifyContent: 'center',
               }}
             >
-              {showPassword ? '👁️‍🗨️' : '👁️'}
+              {showPassword ? '🙈' : '👁️'}
             </button>
           </div>
           {error && (
@@ -163,6 +163,14 @@ function PasswordVerification({ onVerified }: { onVerified: () => void }) {
           >
             Unlock
           </button>
+          <p style={{ 
+            marginTop: '1rem', 
+            fontSize: '0.9rem', 
+            color: '#8b949e', 
+            textAlign: 'center' 
+          }}>
+            If you don't set the password yet, go settings and set password please
+          </p>
         </form>
       </div>
     </>
@@ -590,7 +598,7 @@ function ViewEntriesContent() {
                       fontSize: '0.875rem'
                     }}
                   >
-                    {visibleEntries.has(index) ? '🙈 Hide' : '👁️ Show'}
+                    {visibleEntries.has(index) ? '🙈' : '👁️'}
                   </button>
                   <button
                     onClick={() => copyToClipboard(entry.password, 'password', index)}

@@ -320,7 +320,8 @@ function EditCredentialForm() {
             backgroundColor: '#0d1117',
             borderRadius: '4px',
             color: status.includes('❌') ? '#f85149' : '#2ea043',
-            border: status.includes('❌') ? '1px solid #f85149' : '1px solid #2ea043'
+            border: status.includes('❌') ? '1px solid #f85149' : '1px solid #2ea043',
+            fontSize: '0.85rem'
           }}
         >
           {status}
