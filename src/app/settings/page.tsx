@@ -493,7 +493,7 @@ export default function Settings() {
           setActiveSection('resetPassword');
           startReVerificationTimer();
           await updateUserStatus({ isReVerified: true });
-          setVerificationStatus('Re-verification successful! You can now reset your password.');
+          setVerificationStatus('Re-verification successful!');
         } else {
           setIsVerified(true);
           setActiveSection('setPassword');
