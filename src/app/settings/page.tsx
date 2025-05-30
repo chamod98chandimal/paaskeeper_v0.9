@@ -644,10 +644,13 @@ export default function Settings() {
                     playsInline
                     style={{
                       display: isCameraActive ? 'block' : 'none',
-                      maxWidth: '100%',
+                      width: '200px',
+                      height: '150px',
                       margin: '0 auto',
                       visibility: isCameraActive ? 'visible' : 'hidden',
-                      transform: 'scaleX(-1)'
+                      transform: 'scaleX(-1)',
+                      borderRadius: '8px',
+                      border: '2px solid #ddd'
                     }}
                   />
                   <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -755,10 +758,13 @@ export default function Settings() {
                     playsInline
                     style={{
                       display: isCameraActive ? 'block' : 'none',
-                      maxWidth: '100%',
+                      width: '200px',
+                      height: '150px',
                       margin: '0 auto',
                       visibility: isCameraActive ? 'visible' : 'hidden',
-                      transform: 'scaleX(-1)'
+                      transform: 'scaleX(-1)',
+                      borderRadius: '8px',
+                      border: '2px solid #ddd'
                     }}
                   />
                   <canvas ref={canvasRef} style={{ display: 'none' }} />

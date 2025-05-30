@@ -6,6 +6,9 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
         <span className={styles.footerText}>VMTEK Works @ 2025</span>
+        <Link href="/faq" className={styles.privacyLink}>
+          FAQ
+        </Link>
         <Link href="/privacy" className={styles.privacyLink}>
           Privacy Policy
         </Link>
