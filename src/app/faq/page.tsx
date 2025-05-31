@@ -12,7 +12,7 @@ export default function FAQ() {
           
           <h3>What is Paaskeeper?</h3>
           <p>
-            Paaskeeper is a decentralized password manager that uses blockchain technology to securely store your passwords and sensitive data. Built on Ethereum Sepolia testnet with MetaMask integration and Lit Protocol encryption, it provides a zero-knowledge security model where only you can access your data.
+            Paaskeeper is a decentralized password vault that uses blockchain technology to securely store your passwords and sensitive data. Built on Ethereum Sepolia testnet with MetaMask integration and Lit Protocol encryption, it provides a zero-knowledge security model where only you can access your data.
           </p>
 
           <h3>Do I need any special software to use Paaskeeper?</h3>
@@ -22,7 +22,7 @@ export default function FAQ() {
 
           <h3>Is Paaskeeper free to use?</h3>
           <p>
-            Currently, Paaskeeper operates on the Ethereum Sepolia testnet, which means you only need testnet ETH (free) for transactions. As it's in beta version 0.2, the service is free during the testing phase.
+            Currently, Paaskeeper operates on the Ethereum Sepolia testnet (<a href="https://cloud.google.com/application/web3/faucet/ethereum/sepolia" target="_blank">Ethereum Sepolia Faucet</a>), which means you only need testnet ETH (free) for transactions. As it's in beta version 0.2, the service is free during the testing phase.
           </p>
         </section>
 
@@ -57,7 +57,7 @@ export default function FAQ() {
           
           <h3>What is the Ethereum Sepolia testnet?</h3>
           <p>
-            Sepolia is a test blockchain network that mimics the main Ethereum network but uses test ETH with no real value. It's perfect for testing decentralized applications without risking real money. Paaskeeper uses Sepolia during its beta phase.
+          <a href="https://docs.etherscan.io/sepolia-etherscan" target="_blank">Sepolia</a>  is a test blockchain network that mimics the main Ethereum network but uses test ETH with no real value. It's perfect for testing decentralized applications without risking real money. Paaskeeper uses Sepolia during its beta phase.
           </p>
 
           <h3>What is Lit Protocol and why do you use it?</h3>
