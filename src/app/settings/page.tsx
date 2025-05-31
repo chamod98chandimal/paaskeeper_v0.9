@@ -644,8 +644,8 @@ export default function Settings() {
                     playsInline
                     style={{
                       display: isCameraActive ? 'block' : 'none',
-                      width: '200px',
-                      height: '150px',
+                      width: '350px',
+                      height: '300px',
                       margin: '0 auto',
                       visibility: isCameraActive ? 'visible' : 'hidden',
                       transform: 'scaleX(-1)',
@@ -758,8 +758,8 @@ export default function Settings() {
                     playsInline
                     style={{
                       display: isCameraActive ? 'block' : 'none',
-                      width: '200px',
-                      height: '150px',
+                      width: '350px',
+                      height: '300px',
                       margin: '0 auto',
                       visibility: isCameraActive ? 'visible' : 'hidden',
                       transform: 'scaleX(-1)',
